@@ -1,0 +1,3 @@
+output/*.html
+output/*.txt
+.DS_Store

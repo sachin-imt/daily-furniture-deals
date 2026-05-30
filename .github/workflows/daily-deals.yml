@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write
-  id-token: write
 
 jobs:
   deal-hunt:
@@ -19,16 +18,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
       - name: Create output directory
         run: mkdir -p output
 
       - name: Run Claude Code Deal Hunt
-        uses: anthropics/claude-code-action@beta
-        with:
-          prompt_file: PROMPT.md
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          allowed_tools: "Bash,WebSearch,WebFetch,Read,Write"
-          timeout_minutes: "25"
+        run: claude -p "$(cat PROMPT.md)" --dangerously-skip-permissions
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        timeout-minutes: 25
 
       - name: Read subject line
         id: subject

@@ -4,6 +4,8 @@ on:
   schedule:
     # Runs at 9pm UTC = 7am AEST (Sydney time) every day
     - cron: '0 21 * * *'
+    # One-time run today 30 May at 6:45pm AEST = 8:45am UTC
+    - cron: '45 8 30 5 *'
   workflow_dispatch:  # Allows manual trigger from GitHub Actions tab
 
 permissions:
